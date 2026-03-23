@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,7 +29,7 @@ export async function POST(request: NextRequest) {
     // 比对数据
     const comparison = compareWithStandards(mockData, standards);
     
-    // 调用 AI 分析
+    // 调用 OpenAI 分析
     const analysis = await getAIAnalysis(mockData, comparison, country);
 
     return NextResponse.json({
@@ -77,18 +82,34 @@ function compareWithStandards(data: any, standards: any) {
 }
 
 async function getAIAnalysis(data: any, comparison: any, country: string) {
-  // 实际应调用 OpenAI API
-  // 这里返回模拟数据
-  
-  const summary = comparison.drinkable
-    ? '根据检测数据，该水质各项指标均符合饮用水标准，可以安全饮用。'
-    : '检测发现部分指标超标，建议进行净化处理后再饮用。';
+  const prompt = `你是一位水质分析专家。根据以下水质检测数据和标准比对结果，生成简明的分析报告。
 
-  const suggestions = [
-    '使用活性炭过滤器去除异味和有机物',
-    '安装反渗透净水器，有效去除重金属',
-    '定期更换滤芯，确保净化效果',
-  ];
+检测数据：
+${JSON.stringify(data, null, 2)}
 
-  return { summary, suggestions };
+标准：${country}
+比对结果：${comparison.drinkable ? '符合标准' : '部分指标超标'}
+
+请提供：
+1. 一段简明的水质安全评估（50字内）
+2. 三条具体的净化处理建议
+
+以JSON格式返回：{"summary": "评估内容", "suggestions": ["建议1", "建议2", "建议3"]}`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.7,
+    });
+
+    const content = response.choices[0].message.content || '{}';
+    return JSON.parse(content);
+  } catch (error) {
+    console.error('OpenAI API 调用失败:', error);
+    return {
+      summary: comparison.drinkable ? '水质各项指标符合标准，可安全饮用。' : '部分指标超标，建议净化后饮用。',
+      suggestions: ['使用活性炭过滤器', '安装反渗透净水器', '定期更换滤芯'],
+    };
+  }
 }
