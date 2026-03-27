@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { WATER_STANDARDS } from '@/lib/standards';
 
+export const runtime = 'edge';
+
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 
 async function callDeepSeek(prompt: string): Promise<string | null> {
