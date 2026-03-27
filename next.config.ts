@@ -1,7 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  allowedDevOrigins: ['knew-mon-situation-broadcasting.trycloudflare.com'],
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
