@@ -5,7 +5,7 @@ export const config = {
   matcher: ['/', '/api/analyze'],
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Let auth routes through
   if (request.nextUrl.pathname.startsWith('/api/auth')) {
     return NextResponse.next();
