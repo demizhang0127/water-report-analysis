@@ -1,11 +1,18 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { WATER_STANDARDS, REGIONS } from '@/lib/standards';
+
+interface UserInfo {
+  email: string;
+  name: string;
+  picture: string;
+}
 
 const steps = ['上传报告', 'AI 解析', '生成报告'];
 
 export default function Home() {
+  const [user, setUser] = useState<UserInfo | null>(null);
   const [selectedCountry, setSelectedCountry] = useState('CN');
   const [file, setFile] = useState<File | null>(null);
   const [textInput, setTextInput] = useState('');
@@ -16,6 +23,13 @@ export default function Home() {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => { if (data.user) setUser(data.user); })
+      .catch(() => {});
+  }, []);
 
   const handleFile = (f: File) => {
     setFile(f);
@@ -90,6 +104,19 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #0c1a3a 50%, #0f2027 100%)' }}>
+      {/* 用户信息栏 */}
+      {user && (
+        <div className="absolute top-0 right-0 z-20 flex items-center gap-3 px-5 py-3">
+          {user.picture && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full border border-slate-600" referrerPolicy="no-referrer" />
+          )}
+          <span className="text-slate-300 text-sm hidden sm:block">{user.name}</span>
+          <a href="/api/auth/logout" className="text-xs text-slate-500 hover:text-slate-300 transition-colors border border-slate-700 hover:border-slate-500 rounded-lg px-2.5 py-1">
+            退出
+          </a>
+        </div>
+      )}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-10 animate-pulse" style={{ background: 'radial-gradient(circle, #38bdf8, transparent)' }} />
         <div className="absolute top-1/3 -right-20 w-80 h-80 rounded-full opacity-8 animate-pulse" style={{ background: 'radial-gradient(circle, #0ea5e9, transparent)', animationDelay: '1s' }} />
