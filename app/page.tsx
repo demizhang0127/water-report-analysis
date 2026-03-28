@@ -33,13 +33,12 @@ export default function Home() {
         if (data.user) {
           setUser(data.user);
         } else {
-          // Not logged in — redirect to Google OAuth
-          window.location.href = '/api/auth/login';
+          window.location.href = '/login';
         }
         setAuthChecked(true);
       })
       .catch(() => {
-        window.location.href = '/api/auth/login';
+        window.location.href = '/login';
       });
   }, []);
 
