@@ -2,6 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { WATER_STANDARDS, REGIONS } from '@/lib/standards';
+import { useLanguage } from '@/lib/useLanguage';
+import { languages } from '@/lib/i18n';
 
 interface UserInfo {
   email: string;
@@ -14,6 +16,7 @@ interface UserInfo {
 const steps = ['上传报告', 'AI 解析', '生成报告'];
 
 export default function Home() {
+  const { lang, t, switchLanguage } = useLanguage();
   const [user, setUser] = useState<UserInfo | null>(null);
   const [maxSuggestions, setMaxSuggestions] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState('CN');
@@ -139,8 +142,18 @@ export default function Home() {
       {/* 用户信息栏 */}
       {authChecked && (
         <div className="absolute top-0 right-0 z-20 flex items-center gap-3 px-5 py-3">
+          {/* Language Switcher */}
+          <select 
+            value={lang} 
+            onChange={(e) => switchLanguage(e.target.value as 'en' | 'zh')}
+            className="text-xs bg-slate-800 text-slate-300 border border-slate-700 rounded px-2 py-1"
+          >
+            {Object.entries(languages).map(([code, { name, flag }]) => (
+              <option key={code} value={code}>{flag} {name}</option>
+            ))}
+          </select>
           <a href="/pricing" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
-            Pricing
+            {t.pricing}
           </a>
           {user ? (
             <>
@@ -150,10 +163,10 @@ export default function Home() {
               )}
               <span className="text-slate-300 text-sm hidden sm:block">{user.name}</span>
               <a href="/dashboard" className="text-xs text-sky-400 hover:text-sky-300 transition-colors border border-sky-700 hover:border-sky-500 rounded-lg px-2.5 py-1">
-                个人中心
+                {t.dashboard}
               </a>
               <a href="/api/auth/logout" className="text-xs text-slate-500 hover:text-slate-300 transition-colors border border-slate-700 hover:border-slate-500 rounded-lg px-2.5 py-1">
-                退出
+                {t.logout}
               </a>
             </>
           ) : (
