@@ -161,7 +161,15 @@ export default function Home() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full border border-slate-600" referrerPolicy="no-referrer" />
               )}
-              <span className="text-slate-300 text-sm hidden sm:block">{user.name}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-300 text-sm hidden sm:block">{user.name}</span>
+                {user.userType === 'subscription' && (
+                  <span className="px-2 py-0.5 rounded text-xs font-medium" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', color: 'white' }}>Pro</span>
+                )}
+                {user.userType === 'pay_per_use' && (
+                  <span className="px-2 py-0.5 rounded text-xs font-medium bg-purple-500/20 text-purple-400">Start</span>
+                )}
+              </div>
               <a href="/dashboard" className="text-xs text-sky-400 hover:text-sky-300 transition-colors border border-sky-700 hover:border-sky-500 rounded-lg px-2.5 py-1">
                 {t.dashboard}
               </a>
