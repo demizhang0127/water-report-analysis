@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       orderId: order.id,
-      approvalUrl,
+      approvalUrl: approvalUrl + `&plan=${planType}`,
       plan: planType,
     });
   } catch (error) {
