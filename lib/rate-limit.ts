@@ -1,5 +1,6 @@
 // IP rate limiting for guest users
 const guestAnalysis = new Map<string, number>();
+const freeUserAnalysis = new Map<string, number>();
 
 export function checkGuestLimit(ip: string): { allowed: boolean; resetTime?: number } {
   const now = Date.now();
@@ -16,6 +17,23 @@ export function checkGuestLimit(ip: string): { allowed: boolean; resetTime?: num
   }
   
   guestAnalysis.set(ip, now);
+  return { allowed: true };
+}
+
+export function checkFreeUserLimit(userId: string): { allowed: boolean; resetTime?: number } {
+  const now = Date.now();
+  const lastAnalysis = freeUserAnalysis.get(userId);
+  
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  
+  if (lastAnalysis && now - lastAnalysis < ONE_DAY) {
+    return {
+      allowed: false,
+      resetTime: lastAnalysis + ONE_DAY,
+    };
+  }
+  
+  freeUserAnalysis.set(userId, now);
   return { allowed: true };
 }
 

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { WATER_STANDARDS } from '@/lib/standards';
 import { getSession } from '@/lib/auth';
-import { checkGuestLimit } from '@/lib/rate-limit';
+import { checkGuestLimit, checkFreeUserLimit } from '@/lib/rate-limit';
+import { db } from '@/lib/db';
 
 export const runtime = 'edge';
 
@@ -60,8 +61,8 @@ export async function POST(request: NextRequest) {
     // Check if user is logged in
     const session = await getSession(request);
     
-    // If not logged in, check IP rate limit
     if (!session) {
+      // Guest user - check IP limit
       const ip = request.headers.get('cf-connecting-ip') || 
                  request.headers.get('x-forwarded-for') || 
                  request.headers.get('x-real-ip') || 
@@ -74,6 +75,21 @@ export async function POST(request: NextRequest) {
           error: `游客每天只能分析1次。请登录解锁更多次数，或等待至 ${resetDate.toLocaleString('zh-CN')} 后重试。` 
         }, { status: 429 });
       }
+    } else {
+      // Logged in user - check user type
+      const user = db.getUser(session.sub);
+      
+      if (user && user.userType === 'free') {
+        // Free user - check daily limit
+        const limitCheck = checkFreeUserLimit(user.id);
+        if (!limitCheck.allowed) {
+          const resetDate = new Date(limitCheck.resetTime!);
+          return NextResponse.json({ 
+            error: `免费用户每天只能分析1次。请升级套餐解锁更多次数，或等待至 ${resetDate.toLocaleString('zh-CN')} 后重试。` 
+          }, { status: 429 });
+        }
+      }
+      // Paid users (subscription/pay_per_use) have no daily limit here
     }
     
     const formData = await request.formData();
