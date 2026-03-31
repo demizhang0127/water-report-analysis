@@ -7,6 +7,8 @@ interface UserInfo {
   email: string;
   name: string;
   picture: string;
+  userType?: string;
+  maxSuggestions?: number;
 }
 
 const steps = ['上传报告', 'AI 解析', '生成报告'];
