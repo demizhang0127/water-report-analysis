@@ -42,7 +42,7 @@ export function checkUserPermissions(user: User | null) {
     userType: 'free' as const,
     canAnalyze: true,
     maxSuggestions: 2,
-    canSwitchStandards: false,
+    canSwitchStandards: true,
     remainingCredits: 0,
   };
 }
