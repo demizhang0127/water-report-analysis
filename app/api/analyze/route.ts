@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { WATER_STANDARDS } from '@/lib/standards';
+import { getSession } from '@/lib/auth';
+import { checkGuestLimit } from '@/lib/rate-limit';
 
 export const runtime = 'edge';
 
@@ -55,6 +57,25 @@ function getMockResult(country: string, standard: typeof WATER_STANDARDS[string]
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if user is logged in
+    const session = await getSession(request);
+    
+    // If not logged in, check IP rate limit
+    if (!session) {
+      const ip = request.headers.get('cf-connecting-ip') || 
+                 request.headers.get('x-forwarded-for') || 
+                 request.headers.get('x-real-ip') || 
+                 'unknown';
+      
+      const limitCheck = checkGuestLimit(ip);
+      if (!limitCheck.allowed) {
+        const resetDate = new Date(limitCheck.resetTime!);
+        return NextResponse.json({ 
+          error: `游客每天只能分析1次。请登录解锁更多次数，或等待至 ${resetDate.toLocaleString('zh-CN')} 后重试。` 
+        }, { status: 429 });
+      }
+    }
+    
     const formData = await request.formData();
     const country = (formData.get('country') as string) || 'CN';
     const mode = (formData.get('mode') as string) || 'file';
