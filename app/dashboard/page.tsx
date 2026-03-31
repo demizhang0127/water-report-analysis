@@ -17,6 +17,30 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [purchasing, setPurchasing] = useState(false);
+
+  const handlePurchase = async (plan: string) => {
+    setPurchasing(true);
+    try {
+      const res = await fetch('/api/payment/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
+      });
+      
+      const data = await res.json();
+      
+      if (data.approvalUrl) {
+        window.location.href = data.approvalUrl;
+      } else {
+        alert('Payment creation failed. Please try again.');
+      }
+    } catch (error) {
+      alert('Payment error. Please try again.');
+    } finally {
+      setPurchasing(false);
+    }
+  };
 
   useEffect(() => {
     fetch('/api/user/profile')
@@ -126,8 +150,8 @@ export default function Dashboard() {
               <div className="text-slate-400 text-sm mb-2">按次购买</div>
               <div className="text-3xl font-bold text-white mb-1">$0.99</div>
               <div className="text-slate-500 text-xs mb-4">单次解锁</div>
-              <button className="w-full py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm transition-colors">
-                购买
+              <button onClick={() => handlePurchase('single')} disabled={purchasing} className="w-full py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm transition-colors disabled:opacity-50">
+                {purchasing ? 'Processing...' : '购买'}
               </button>
             </div>
 
@@ -139,8 +163,8 @@ export default function Dashboard() {
               <div className="text-slate-400 text-sm mb-2">套餐</div>
               <div className="text-3xl font-bold text-white mb-1">$2.99</div>
               <div className="text-slate-500 text-xs mb-4">5次 + 不限标准</div>
-              <button className="w-full py-2 rounded-lg text-white text-sm transition-colors" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
-                购买
+              <button onClick={() => handlePurchase('package')} disabled={purchasing} className="w-full py-2 rounded-lg text-white text-sm transition-colors disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
+                {purchasing ? 'Processing...' : '购买'}
               </button>
             </div>
 
@@ -149,8 +173,8 @@ export default function Dashboard() {
               <div className="text-slate-400 text-sm mb-2">订阅制</div>
               <div className="text-3xl font-bold text-white mb-1">$9.99</div>
               <div className="text-slate-500 text-xs mb-4">60天 / 50次</div>
-              <button className="w-full py-2 rounded-lg text-white text-sm transition-colors" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
-                订阅
+              <button onClick={() => handlePurchase('subscription')} disabled={purchasing} className="w-full py-2 rounded-lg text-white text-sm transition-colors disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
+                {purchasing ? 'Processing...' : '订阅'}
               </button>
             </div>
           </div>
