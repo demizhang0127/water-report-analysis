@@ -8,7 +8,12 @@ export function useLanguage() {
 
   useEffect(() => {
     const saved = localStorage.getItem('language') as 'en' | 'zh';
-    if (saved) setLang(saved);
+    if (saved) {
+      setLang(saved);
+    } else {
+      // Default to English
+      setLang('en');
+    }
   }, []);
 
   const switchLanguage = (newLang: 'en' | 'zh') => {

@@ -198,13 +198,13 @@ export default function Home() {
             </svg>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 tracking-tight">
-            水质报告 <span style={{ background: 'linear-gradient(90deg, #38bdf8, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI 分析</span>
+            {t.title.split(' ').slice(0, -2).join(' ')} <span style={{ background: 'linear-gradient(90deg, #38bdf8, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t.title.split(' ').slice(-2).join(' ')}</span>
           </h1>
-          <p className="text-slate-400 text-lg">上传水质报告或输入检测数据，秒级获得专业安全评估</p>
+          <p className="text-slate-400 text-lg">{t.subtitle}</p>
           <div className="flex items-center justify-center gap-6 mt-5 text-sm text-slate-500">
-            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-400 inline-block" />即时分析</span>
-            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />全球标准</span>
-            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-cyan-400 inline-block" />AI 驱动</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-400 inline-block" />{t.features.instant}</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />{t.features.global}</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-cyan-400 inline-block" />{t.features.ai}</span>
           </div>
         </div>
 
@@ -214,7 +214,7 @@ export default function Home() {
 
             {/* 国家/标准选择 */}
             <div className="mb-7">
-              <label className="block text-sm font-medium text-slate-400 mb-3 uppercase tracking-wider">选择评估标准</label>
+              <label className="block text-sm font-medium text-slate-400 mb-3 uppercase tracking-wider">{t.selectStandard}</label>
               <div className="space-y-3">
                 {REGIONS.map(region => (
                   <div key={region.label}>
@@ -263,7 +263,7 @@ export default function Home() {
 
             {/* 输入模式切换 */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-400 mb-3 uppercase tracking-wider">输入方式</label>
+              <label className="block text-sm font-medium text-slate-400 mb-3 uppercase tracking-wider">{t.inputMode}</label>
               <div className="flex gap-2 p-1 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <button
                   type="button"
@@ -274,7 +274,7 @@ export default function Home() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  上传文件
+                  {t.uploadFile}
                 </button>
                 <button
                   type="button"
@@ -285,7 +285,7 @@ export default function Home() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
-                  文字描述
+                  {t.textInput}
                 </button>
               </div>
             </div>
@@ -320,14 +320,14 @@ export default function Home() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                             </svg>
                           </span>
-                          <span className="text-emerald-400 text-sm font-medium">文件已选择</span>
+                          <span className="text-emerald-400 text-sm font-medium">{t.fileSelected}</span>
                         </div>
                         <p className="text-white font-medium truncate max-w-xs">{file.name}</p>
                         <p className="text-slate-400 text-sm mt-0.5">{formatFileSize(file.size)}</p>
                         <button type="button"
                           onClick={(e) => { e.preventDefault(); setFile(null); setResult(null); setError(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
                           className="text-xs text-sky-400 hover:text-sky-300 mt-1.5 underline underline-offset-2 transition-colors">
-                          更换文件
+                          {t.changeFile}
                         </button>
                       </div>
                     </div>
@@ -338,8 +338,8 @@ export default function Home() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                       </div>
-                      <p className="text-slate-300 font-medium mb-1">拖拽文件到此处，或点击选择</p>
-                      <p className="text-slate-500 text-sm">支持 PDF、图片（JPG/PNG）、Word、Excel</p>
+                      <p className="text-slate-300 font-medium mb-1">{t.dragDrop}</p>
+                      <p className="text-slate-500 text-sm">{t.supportedFormats}</p>
                     </>
                   )}
                 </label>
@@ -386,14 +386,14 @@ export default function Home() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  AI 正在分析…
+                  {t.analyzing}
                 </span>
               ) : (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  开始 AI 分析
+                  {t.analyze}
                 </span>
               )}
             </button>
@@ -546,13 +546,13 @@ export default function Home() {
               type="button"
               className="w-full py-3 rounded-xl text-slate-400 text-sm hover:text-white transition-colors"
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              重新分析
+              {t.reAnalyze}
             </button>
           </div>
         )}
 
         <div className="mt-10 text-center text-slate-600 text-xs space-y-1">
-          <p>上传文件仅用于本次分析，不会被存储</p>
+          <p>{t.uploadFile}仅用于本次分析，不会被存储</p>
           <p>Powered by Gemini AI · 支持 PDF、图片、Word、Excel 格式</p>
         </div>
       </div>
