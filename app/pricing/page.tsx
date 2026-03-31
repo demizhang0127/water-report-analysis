@@ -1,8 +1,31 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function Pricing() {
-  const handlePurchase = () => {
-    alert('PayPal Coming Soon');
+  const [loading, setLoading] = useState(false);
+
+  const handlePurchase = async (plan: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/payment/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
+      });
+      
+      const data = await res.json();
+      
+      if (data.approvalUrl) {
+        window.location.href = data.approvalUrl;
+      } else {
+        alert('Payment creation failed. Please try again.');
+      }
+    } catch (error) {
+      alert('Payment error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,8 +64,8 @@ export default function Pricing() {
                 All Standards
               </li>
             </ul>
-            <button onClick={handlePurchase} className="w-full py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition-colors">
-              Purchase
+            <button onClick={() => handlePurchase('single')} disabled={loading} className="w-full py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-medium transition-colors disabled:opacity-50">
+              {loading ? 'Processing...' : 'Purchase'}
             </button>
           </div>
 
@@ -74,8 +97,8 @@ export default function Pricing() {
                 Unlimited Standards
               </li>
             </ul>
-            <button onClick={handlePurchase} className="w-full py-3 rounded-xl text-white font-medium transition-colors" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
-              Purchase
+            <button onClick={() => handlePurchase('package')} disabled={loading} className="w-full py-3 rounded-xl text-white font-medium transition-colors disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
+              {loading ? 'Processing...' : 'Purchase'}
             </button>
           </div>
 
@@ -104,8 +127,8 @@ export default function Pricing() {
                 Unlimited Standards
               </li>
             </ul>
-            <button onClick={handlePurchase} className="w-full py-3 rounded-xl text-white font-medium transition-colors" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
-              Subscribe
+            <button onClick={() => handlePurchase('subscription')} disabled={loading} className="w-full py-3 rounded-xl text-white font-medium transition-colors disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)' }}>
+              {loading ? 'Processing...' : 'Subscribe'}
             </button>
           </div>
         </div>
