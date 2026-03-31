@@ -130,6 +130,9 @@ export default function Home() {
                 <img src={user.picture} alt={user.name} className="w-8 h-8 rounded-full border border-slate-600" referrerPolicy="no-referrer" />
               )}
               <span className="text-slate-300 text-sm hidden sm:block">{user.name}</span>
+              <a href="/dashboard" className="text-xs text-sky-400 hover:text-sky-300 transition-colors border border-sky-700 hover:border-sky-500 rounded-lg px-2.5 py-1">
+                个人中心
+              </a>
               <a href="/api/auth/logout" className="text-xs text-slate-500 hover:text-slate-300 transition-colors border border-slate-700 hover:border-slate-500 rounded-lg px-2.5 py-1">
                 退出
               </a>
