@@ -139,6 +139,9 @@ export default function Home() {
       {/* 用户信息栏 */}
       {authChecked && (
         <div className="absolute top-0 right-0 z-20 flex items-center gap-3 px-5 py-3">
+          <a href="/pricing" className="text-slate-400 hover:text-white transition-colors text-sm font-medium">
+            Pricing
+          </a>
           {user ? (
             <>
               {user.picture && (
