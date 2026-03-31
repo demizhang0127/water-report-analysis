@@ -1,0 +1,53 @@
+export const languages = {
+  en: { name: 'English', flag: '🇺🇸' },
+  zh: { name: '中文', flag: '🇨🇳' },
+  es: { name: 'Español', flag: '🇪🇸' },
+  pt: { name: 'Português', flag: '🇧🇷' },
+  fr: { name: 'Français', flag: '🇫🇷' },
+  ar: { name: 'العربية', flag: '🇸🇦' },
+};
+
+export const translations = {
+  en: {
+    title: 'Water Quality Report Analysis',
+    subtitle: 'Upload your water quality report and get professional safety assessment instantly',
+    features: {
+      instant: 'Instant Analysis',
+      global: 'Global Standards',
+      ai: 'AI Powered',
+    },
+    selectStandard: 'Select Evaluation Standard',
+    inputMode: 'Input Method',
+    uploadFile: 'Upload File',
+    textInput: 'Text Description',
+    dragDrop: 'Drag file here, or click to select',
+    supportedFormats: 'Supports PDF, Images (JPG/PNG), Word, Excel',
+    analyze: 'Start AI Analysis',
+    analyzing: 'AI is analyzing...',
+    login: 'Google Login',
+    logout: 'Logout',
+    dashboard: 'Dashboard',
+    pricing: 'Pricing',
+  },
+  zh: {
+    title: '水质报告分析',
+    subtitle: '上传水质报告或输入检测数据，秒级获得专业安全评估',
+    features: {
+      instant: '即时分析',
+      global: '全球标准',
+      ai: 'AI 驱动',
+    },
+    selectStandard: '选择评估标准',
+    inputMode: '输入方式',
+    uploadFile: '上传文件',
+    textInput: '文字描述',
+    dragDrop: '拖拽文件到此处，或点击选择',
+    supportedFormats: '支持 PDF、图片（JPG/PNG）、Word、Excel',
+    analyze: '开始 AI 分析',
+    analyzing: 'AI 正在分析…',
+    login: 'Google 登录',
+    logout: '退出',
+    dashboard: '个人中心',
+    pricing: '定价',
+  },
+};
