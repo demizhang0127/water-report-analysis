@@ -15,6 +15,7 @@ const steps = ['上传报告', 'AI 解析', '生成报告'];
 
 export default function Home() {
   const [user, setUser] = useState<UserInfo | null>(null);
+  const [maxSuggestions, setMaxSuggestions] = useState(1);
   const [selectedCountry, setSelectedCountry] = useState('CN');
   const [file, setFile] = useState<File | null>(null);
   const [textInput, setTextInput] = useState('');
@@ -29,13 +30,28 @@ export default function Home() {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    fetch('/api/user/profile')
       .then(r => r.json())
       .then(data => {
-        if (data.user) setUser(data.user);
+        if (data.user) {
+          setUser(data.user);
+          // Set max suggestions based on user type
+          if (data.user.userType === 'subscription' || data.user.userType === 'pay_per_use') {
+            setMaxSuggestions(3);
+          } else if (data.user.userType === 'free') {
+            setMaxSuggestions(2);
+          } else {
+            setMaxSuggestions(1);
+          }
+        } else {
+          setMaxSuggestions(1); // Guest
+        }
         setAuthChecked(true);
       })
-      .catch(() => setAuthChecked(true));
+      .catch(() => {
+        setMaxSuggestions(1);
+        setAuthChecked(true);
+      });
   }, []);
 
   const handleFile = (f: File) => {
@@ -494,14 +510,14 @@ export default function Home() {
                 <div className="space-y-2">
                   {result.suggestions.map((s: string, i: number) => (
                     <div key={i} className="flex items-start gap-3 p-3 rounded-xl transition-all"
-                      style={i === 0 ? { background: 'rgba(14,165,233,0.1)', border: '1px solid rgba(14,165,233,0.2)' }
+                      style={i < maxSuggestions ? { background: 'rgba(14,165,233,0.1)', border: '1px solid rgba(14,165,233,0.2)' }
                         : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', opacity: 0.45 }}>
                       <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
-                        style={i === 0 ? { background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', color: 'white' } : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.3)' }}>
+                        style={i < maxSuggestions ? { background: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', color: 'white' } : { background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.3)' }}>
                         {i + 1}
                       </div>
-                      <span className={`text-sm ${i === 0 ? 'text-slate-200' : 'text-slate-600 select-none'}`}>
-                        {i === 0 ? s : '🔒 升级解锁更多专业建议'}
+                      <span className={`text-sm ${i < maxSuggestions ? 'text-slate-200' : 'text-slate-600 select-none'}`}>
+                        {i < maxSuggestions ? s : '🔒 升级解锁更多专业建议'}
                       </span>
                     </div>
                   ))}
