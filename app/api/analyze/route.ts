@@ -10,7 +10,7 @@ const AI_API_KEY = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || proce
 const AI_API_BASE = process.env.AI_API_BASE || 'https://api.openai.com/v1';
 const AI_MODEL = process.env.AI_MODEL || 'gpt-4o-mini';
 
-async function callAI(prompt: string): Promise<string | null> {
+async function callAI(prompt: string, lang: string): Promise<string | null> {
   try {
     const res = await fetch(`${AI_API_BASE}/chat/completions`, {
       method: 'POST',
@@ -238,7 +238,7 @@ export async function POST(request: NextRequest) {
 
     // 构建详细 Prompt 并调用 AI
     const prompt = buildPrompt(inputContent, standard, lang);
-    const aiText = await callAI(prompt);
+    const aiText = await callAI(prompt, lang);
 
     if (aiText) {
       // 尝试从返回文本中提取 JSON
