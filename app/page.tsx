@@ -249,7 +249,7 @@ export default function Home() {
                             }}
                           >
                             <span>{s.flag}</span>
-                            <span>{s.name}</span>
+                            <span>{lang === 'zh' ? s.name : s.nameEn}</span>
                           </button>
                         );
                       })}
