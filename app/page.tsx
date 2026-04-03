@@ -438,7 +438,7 @@ export default function Home() {
               </svg>
             </div>
             <div>
-              <p className="text-red-400 font-medium">分析失败</p>
+              <p className="text-red-400 font-medium">{t.analysisFailed}</p>
               <p className="text-red-300/70 text-sm mt-0.5">{error}</p>
             </div>
           </div>
@@ -451,7 +451,7 @@ export default function Home() {
             {result.standard && (
               <div className="rounded-xl px-4 py-2 flex items-center gap-2 text-sm" style={{ background: 'rgba(56,189,248,0.06)', border: '1px solid rgba(56,189,248,0.12)' }}>
                 <span>{selectedStandard?.flag}</span>
-                <span className="text-slate-400">评估依据：</span>
+                <span className="text-slate-400">{t.evaluationBasis}</span>
                 <span className="text-sky-400 font-medium">{result.standard.name} · {result.standard.code}</span>
                 <span className="text-slate-600 text-xs ml-1">({result.standard.authority})</span>
               </div>
@@ -479,7 +479,7 @@ export default function Home() {
                   )}
                 </div>
                 <div>
-                  <div className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: result.drinkable ? '#34d399' : '#f87171' }}>综合评定</div>
+                  <div className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: result.drinkable ? '#34d399' : '#f87171' }}>{t.overallAssessment}</div>
                   <div className="text-xl font-bold text-white">{result.drinkable ? '✅ 水质符合饮用标准' : '⚠️ 水质不符合饮用标准'}</div>
                 </div>
               </div>
@@ -492,17 +492,17 @@ export default function Home() {
                   <svg className="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  指标对比
+                  {t.indicators}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   {result.indicators.map((ind: any, i: number) => (
                     <div key={i} className="p-3 rounded-xl" style={{ background: ind.pass ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${ind.pass ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}` }}>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-slate-400 text-xs">{ind.name}</span>
-                        <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${ind.pass ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>{ind.pass ? '✓ 达标' : '✗ 超标'}</span>
+                        <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${ind.pass ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>{ind.pass ? t.qualified : t.exceeded}</span>
                       </div>
                       <div className="text-white font-semibold">{ind.value}</div>
-                      <div className="text-slate-500 text-xs mt-0.5">标准: {ind.standard}</div>
+                      <div className="text-slate-500 text-xs mt-0.5">{t.standard}: {ind.standard}</div>
                     </div>
                   ))}
                 </div>
@@ -517,7 +517,7 @@ export default function Home() {
                     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                   </svg>
                 </div>
-                AI 专业解读
+                {t.aiAnalysis}
               </h3>
               <p className="text-slate-300 leading-relaxed text-sm">{result.analysis}</p>
             </div>
@@ -529,7 +529,7 @@ export default function Home() {
                   <svg className="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  净化处理建议
+                  {t.suggestions}
                 </h3>
                 <div className="space-y-2">
                   {result.suggestions.map((s: string, i: number) => (
