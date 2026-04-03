@@ -10,10 +10,8 @@ export function useLanguage() {
     const saved = localStorage.getItem('language') as 'en' | 'zh';
     if (saved) {
       setLang(saved);
-    } else {
-      // Default to English
-      setLang('en');
     }
+    // Default is already 'en', no need to set again
   }, []);
 
   const switchLanguage = (newLang: 'en' | 'zh') => {
