@@ -226,7 +226,7 @@ export default function Home() {
               <div className="space-y-3">
                 {REGIONS.map(region => (
                   <div key={region.label}>
-                    <div className="text-xs text-slate-600 mb-2 font-medium">{region.label}</div>
+                    <div className="text-xs text-slate-600 mb-2 font-medium">{lang === 'zh' ? region.label : region.labelEn}</div>
                     <div className="flex flex-wrap gap-2">
                       {region.codes.map(code => {
                         const s = WATER_STANDARDS[code];

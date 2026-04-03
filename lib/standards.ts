@@ -154,11 +154,11 @@ export const WATER_STANDARDS: Record<string, {
 
 // 按地区分组，用于前端选择器
 export const REGIONS = [
-  { label: '国际', codes: ['WHO'] },
-  { label: '亚洲', codes: ['CN', 'JP', 'KR', 'IN', 'SG', 'TH'] },
-  { label: '欧洲', codes: ['EU', 'GB', 'DE', 'FR'] },
-  { label: '北美洲', codes: ['US', 'CA', 'MX'] },
-  { label: '大洋洲', codes: ['AU', 'NZ'] },
-  { label: '南美洲', codes: ['BR'] },
-  { label: '中东/非洲', codes: ['SA', 'ZA'] },
+  { label: '国际', labelEn: 'International', codes: ['WHO'] },
+  { label: '亚洲', labelEn: 'Asia', codes: ['CN', 'JP', 'KR', 'IN', 'SG', 'TH'] },
+  { label: '欧洲', labelEn: 'Europe', codes: ['EU', 'GB', 'DE', 'FR'] },
+  { label: '北美洲', labelEn: 'North America', codes: ['US', 'CA', 'MX'] },
+  { label: '大洋洲', labelEn: 'Oceania', codes: ['AU', 'NZ'] },
+  { label: '南美洲', labelEn: 'South America', codes: ['BR'] },
+  { label: '中东/非洲', labelEn: 'Middle East / Africa', codes: ['SA', 'ZA'] },
 ];
