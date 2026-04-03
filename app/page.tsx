@@ -519,7 +519,17 @@ export default function Home() {
                 </div>
                 {t.aiAnalysis}
               </h3>
-              <p className="text-slate-300 leading-relaxed text-sm">{result.analysis}</p>
+              {/* 综合评估摘要 */}
+              <p className="text-slate-300 leading-relaxed text-sm mb-4">{result.analysis}</p>
+              {/* 详细分析（超标指标逐一分析） */}
+              {result.detail && (
+                <div className="rounded-xl p-4 mt-2" style={{ background: 'rgba(56,189,248,0.05)', border: '1px solid rgba(56,189,248,0.1)' }}>
+                  <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3">
+                    {lang === 'zh' ? '详细分析报告' : 'Detailed Analysis'}
+                  </p>
+                  <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-line">{result.detail}</div>
+                </div>
+              )}
             </div>
 
             {/* 净化建议 */}
