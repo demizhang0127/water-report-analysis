@@ -23,7 +23,9 @@ async function callAI(prompt: string): Promise<string | null> {
         messages: [
           {
             role: 'system',
-            content: '你是一位专业的水质分析专家，拥有深厚的水处理工程和公共卫生知识。你的分析需要专业、详细、易于普通用户理解，并能给出切实可行的建议。',
+            content: lang === 'en'
+              ? 'You are a professional water quality analysis expert with deep knowledge in water treatment engineering and public health. You MUST respond entirely in English regardless of the language of the input. Your analysis should be professional, detailed, and easy for general users to understand.'
+              : '你是一位专业的水质分析专家，拥有深厚的水处理工程和公共卫生知识。无论用户输入是什么语言，你必须完全用中文回复。你的分析需要专业、详细、易于普通用户理解，并能给出切实可行的建议。',
           },
           { role: 'user', content: prompt }
         ],
@@ -44,7 +46,9 @@ function buildPrompt(inputContent: string, standard: typeof WATER_STANDARDS[stri
   const standardLabel = isEn ? standard.nameEn : standard.name;
 
   if (isEn) {
-    return `You are a professional water quality analysis expert. Based on the following water quality information, conduct a comprehensive in-depth assessment against ${standardLabel} (${standard.standard}, Authority: ${standard.authority}).
+    return `You are a professional water quality analysis expert. IMPORTANT: You must respond ENTIRELY in English, regardless of what language the input data is in.
+
+Based on the following water quality information, conduct a comprehensive in-depth assessment against ${standardLabel} (${standard.standard}, Authority: ${standard.authority}).
 
 Water Quality Data:
 ${inputContent}
@@ -80,7 +84,9 @@ Return STRICTLY in the following JSON format (no other text, no markdown code bl
 }`;
   }
 
-  return `你是专业水质分析专家，请根据以下水质信息，严格对照${standardLabel}（${standard.standard}，执行机构：${standard.authority}）进行全面深度评估分析。
+  return `你是专业水质分析专家。重要提示：无论输入数据是什么语言，你必须完全用中文回复。
+
+请根据以下水质信息，严格对照${standardLabel}（${standard.standard}，执行机构：${standard.authority}）进行全面深度评估分析。
 
 水质信息：
 ${inputContent}
