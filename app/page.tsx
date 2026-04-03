@@ -86,6 +86,7 @@ export default function Home() {
     const formData = new FormData();
     formData.append('country', selectedCountry);
     formData.append('mode', inputMode);
+    formData.append('lang', lang);
 
     if (inputMode === 'file' && file) {
       formData.append('file', file);
